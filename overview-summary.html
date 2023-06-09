@@ -3,81 +3,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>The Khepri Database</title>
-<link rel="stylesheet" type="text/css" href="github-markdown.css" title="EDoc">
-<link href="prism.css" rel="stylesheet" />
-<style>
-    body {
-      box-sizing: border-box;
-      min-width: 200px;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 45px;
-    }
-    @media (max-width: 767px) {
-      body {
-        padding: 15px;
-      }
-    }
-    /* Don't apply the table style to the top-level navigation bar. */
-    .navbar table {
-      display: table;
-      width: 100%;
-    }
-    .navbar table tr,
-    .navbar table th,
-    .navbar table td {
-      border: 0;
-    }
-    /* Keep the same font side inside code blocks than everywhere else. */
-    .markdown-body pre code,
-    code[class*="language-"] {
-      font-size: 85%;
-    }
-    /* Force the color for link on code blocks used for @see tags.  */
-    .markdown-body a code,
-    .markdown-body a code span.token {
-      color: var(--color-accent-fg);
-    }
-    /* Copy the style of code blocks. */
-    .markdown-body .spec {
-      background: #f5f2f0;
-      padding: 1em;
-      margin: .5em 0;
-      overflow: auto;
-      border-radius: 6px;
-    }
-    /* Improve margins inside function spec blocks so that:
-        - empty paragraphs don't add useless margins
-        - the final top and bottom margins are equal */
-    .markdown-body .spec p,
-    .markdown-body .spec ul {
-      margin-top: 16px;
-      margin-bottom: 0;
-    }
-    .markdown-body .spec p:first-child,
-    .markdown-body .spec p:empty {
-      margin-top: 0;
-    }
-    /* Put the function prototype in bold characters. */
-    .markdown-body .spec > p > code:first-child {
-      font-weight: bold;
-    }
-    /* Add some margin below the module short description between the table
-       of contents in the Description section. This text isn't in a
-       <p></p>. */
-    .index + p {
-      margin-top: 16px;
-    }
-    </style>
+<link rel="stylesheet" type="text/css" href="edoc-extensions.css" title="EDoc">
+<link rel="icon" href="khepri-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 </head>
 <body class="markdown-body language-erlang">
 <script src="prism.js"></script>
 <div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
 <h1>The Khepri Database</h1>
-<p>Copyright © 2021-2022 VMware, Inc. or its affiliates.  All rights reserved.</p>
+<p>Copyright © 2021-2023 VMware, Inc. or its affiliates.  All rights reserved.</p>
 <p><b>Version:</b> Development branch
 </p>
-<p><b>Authors:</b> Jean-Sébastien Pédron (<a href="mailto:jean-sebastien@rabbitmq.com"><tt>jean-sebastien@rabbitmq.com</tt></a>), Karl Nilsson (<a href="mailto:nkarl@vmware.com"><tt>nkarl@vmware.com</tt></a>), The RabbitMQ team (<a href="mailto:info@rabbitmq.com"><tt>info@rabbitmq.com</tt></a>).</p>
+<p><b>Authors:</b> Jean-Sébastien Pédron (<a href="mailto:jean-sebastien@rabbitmq.com"><tt>jean-sebastien@rabbitmq.com</tt></a>), Michael Davis (<a href="mailto:mcarsondavis@gmail.com"><tt>mcarsondavis@gmail.com</tt></a>), Karl Nilsson (<a href="mailto:nkarl@vmware.com"><tt>nkarl@vmware.com</tt></a>), The RabbitMQ team (<a href="mailto:info@rabbitmq.com"><tt>info@rabbitmq.com</tt></a>).</p>
 <p>
 Khepri is a tree-like replicated on-disk database library for Erlang and
 Elixir.</p>
@@ -93,6 +30,8 @@ algorithm</a>. In Ra parlance, Khepri is a state machine in a Ra cluster.</p>
 
 <p>This page <strong>describes all the concepts in Khepri</strong> and points the
 reader to the modules' documentation for more details.</p>
+
+<p><a class="github-fork-ribbon" href="https://github.com/rabbitmq/khepri" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a></p>
 
 <hr>
 
@@ -115,7 +54,7 @@ the primary reason why the RabbitMQ team started to explore other options.</p>
 
 <p>Because RabbitMQ already uses an implementation of the Raft consensus algorithm
 for its quorum queues, it was decided to leverage that library for all
-metadata. That's how Khepri was borned.</p>
+metadata. That's how Khepri was borne.</p>
 
 <p>Thanks to Ra and Raft, it is <strong>clear how Khepri will behave during a
 network partition and recover from it</strong>. This makes it more comfortable
@@ -131,7 +70,7 @@ work in progress.
 
 <h4><a name="Tree_nodes">Tree nodes</a></h4>
 
-Data in Khepri are organized as <em>tree nodes</em> (<a docgen-rel="seetype" docgen-href="khepri_machine#tree_node/0" href="khepri_machine.html#type-tree_node"><code>khepri_machine:tree_node()</code></a>) in a tree structure. Every tree nodes have:
+Data in Khepri are organized as <em>tree nodes</em> (<a docgen-rel="seetype" docgen-href="khepri_machine#tree_node/0" href="khepri_machine.html#type-tree_node"><code>khepri_machine:tree_node()</code></a>) in a tree structure. Every tree node has:
 <ul>
 <li>a <a href="#Node_ID">node ID</a></li>
 <li>a <a href="#Payload">payload</a> (optional)</li>
@@ -185,7 +124,7 @@ nodes were added or removed (<a docgen-rel="seetype" docgen-href="khepri#child_l
 
 A path is a list of node IDs, from the root (unnamed) tree node to the target
 (<a docgen-rel="seetype" docgen-href="khepri_path#path/0" href="khepri_path.html#type-path"><code>khepri_path:path()</code></a>). For instance:
-<pre><code>%% Points to "/:stock/:wood/oak" in the tree showed above:
+<pre><code>%% Points to "/:stock/:wood/oak" in the tree shown above:
 Path = [stock, wood, &lt;&lt;"oak"&gt;&gt;].</code></pre>
 
 It is possible to target multiple tree nodes at once by using a <em>path
@@ -223,9 +162,9 @@ relative paths:
 
 <h4><a name="Tree_node_lifetime">Tree node lifetime</a></h4>
 
-<p>A tree node's lifetime starts when it is inserted the first time, until it is
-removed from the tree. However, intermediary tree nodes created on the way
-remain in the tree long after the leaf node was removed.</p>
+<p>A tree node's lifetime starts when it is inserted the first time and ends when
+it is removed from the tree. However, intermediary tree nodes created on the
+way remain in the tree long after the leaf node was removed.</p>
 
 <p>For instance, when <code>[stock, wood, &lt;&lt;"walnut"&gt;&gt;]</code> was inserted, the intermediary
 tree nodes <code>stock</code> and <code>wood</code> were created if they were missing. After
@@ -252,32 +191,34 @@ the first insert though.</p>
 <p>A Khepri store corresponds to one Ra cluster. In fact, the name of the Ra
 cluster is the name of the Khepri store. It is possible to have multiple
 database instances running on the same Erlang node or cluster by starting
-multiple Ra clusters. Note that it is called a "Ra cluster" but it can have a
+multiple Ra clusters. Note that it is called a "cluster" but it can have a
 single member.</p>
 
-<p>By default, <a docgen-rel="seemfa" docgen-href="khepri#start/0" href="khepri.html#start-0"><code>khepri:start/0</code></a> starts a default store called <code>khepri</code>,
-based on Ra's default system. You can start a simple store using <a docgen-rel="seemfa" docgen-href="khepri#start/1" href="khepri.html#start-1"><code>khepri:start/1</code></a>. To configure a cluster, you need to use <a docgen-rel="seeerl" docgen-href="khepri_cluster" href="khepri_cluster.html"><code>khepri_cluster</code></a> to add or remove members.</p>
+<p>You can start a Khepri store using <a docgen-rel="seemfa" docgen-href="#start/0" href="#start-0"><code>start/0</code></a> up to <a docgen-rel="seemfa" docgen-href="#start/3" href="#start-3"><code>start/3</code></a>. See
+those functions to learn more about the configuration settings.</p>
+
+<p>To expand or shrink a cluster, <a docgen-rel="seemfa" docgen-href="khepri_cluster#join/1" href="khepri_cluster.html#join-1"><code>khepri_cluster:join/1</code></a> and <a docgen-rel="seemfa" docgen-href="khepri_cluster#reset/0" href="khepri_cluster.html#reset-0"><code>khepri_cluster:reset/0</code></a> allow a Khepri store node to join or leave a cluster.</p>
 
 <h3><a name="Khepri_API">Khepri API</a></h3>
 
 <p>The essential part of the public API is provided by the <a docgen-rel="seeerl" docgen-href="khepri" href="khepri.html"><code>khepri</code></a> module.
 It covers most common use cases and should be straightforward to use.</p>
 
-<pre><code>{ok, _} = khepri:put([stock, wood, &lt;&lt;"lime tree"&gt;&gt;], 150),
+<pre><code>ok = khepri:put([stock, wood, &lt;&lt;"lime tree"&gt;&gt;], 150),
 
-Ret = khepri:get([stock, wood, &lt;&lt;"lime tree"&gt;&gt;]),
-{ok, #{[stock, wood, &lt;&lt;"lime tree"&gt;&gt;] =&gt;
-       #{data =&gt; 150,
-         payload_version =&gt; 1,
-         child_list_count =&gt; 0,
-         child_list_version =&gt; 1}}} = Ret,
+{ok, 150} = khepri:get([stock, wood, &lt;&lt;"lime tree"&gt;&gt;]),
 
 true = khepri:exists([stock, wood, &lt;&lt;"lime tree"&gt;&gt;]),
 
-{ok, _} = khepri:delete([stock, wood, &lt;&lt;"lime tree"&gt;&gt;]).</code></pre>
+ok = khepri:delete([stock, wood, &lt;&lt;"lime tree"&gt;&gt;]).</code></pre>
 
-<p>Inside transaction funtions, <a docgen-rel="seeerl" docgen-href="khepri_tx" href="khepri_tx.html"><code>khepri_tx</code></a> must be used instead of <a docgen-rel="seeerl" docgen-href="khepri" href="khepri.html"><code>khepri</code></a>. The former provides the same API, except for functions which don't
+<p>Inside transaction functions, <a docgen-rel="seeerl" docgen-href="khepri_tx" href="khepri_tx.html"><code>khepri_tx</code></a> must be used instead of <a docgen-rel="seeerl" docgen-href="khepri" href="khepri.html"><code>khepri</code></a>. The former provides the same API, except for functions which don't
 make sense in the context of a transaction function.</p>
+
+<p><a docgen-rel="seeerl" docgen-href="khepri" href="khepri.html"><code>khepri</code></a> and <a docgen-rel="seeerl" docgen-href="khepri_tx" href="khepri_tx.html"><code>khepri_tx</code></a> both have counterparts for more advanced
+use cases, <a docgen-rel="seeerl" docgen-href="khepri_adv" href="khepri_adv.html"><code>khepri_adv</code></a> and <a docgen-rel="seeerl" docgen-href="khepri_tx_adv" href="khepri_tx_adv.html"><code>khepri_tx_adv</code></a>. The return values of
+the <code>*_adv</code> modules are maps giving more details about what was queried or
+modified.</p>
 
 <p>The public API is built on top of a low-level internal API, provided by the
 private <a docgen-rel="seeerl" docgen-href="khepri_machine" href="khepri_machine.html"><code>khepri_machine</code></a> module.</p>
@@ -341,7 +282,7 @@ Erlang modules, the state of Erlang processes, files on disk or network
 connections, and so on.</li>
 </ol>
 
-<p>To achieve that, <a docgen-rel="seeerl" docgen-href="khepri_fun" href="khepri_fun.html"><code>khepri_fun</code></a> and <a docgen-rel="seeerl" docgen-href="khepri_tx" href="khepri_tx.html"><code>khepri_tx</code></a> extract the assembly
+<p>To achieve that, Horus and <a docgen-rel="seeerl" docgen-href="khepri_tx" href="khepri_tx.html"><code>khepri_tx</code></a> extract the assembly
 code of the anonymous function and create a standalone Erlang module based on
 it. This module can be stored in Ra's log and executed anywhere without the
 presence of the initial anonymous function's module.</p>
@@ -381,9 +322,9 @@ in between.</li>
 <p>Here is an example of the second option:</p>
 
 <pre><code>Path = [stock, wood, &lt;&lt;"lime tree"&gt;&gt;],
-{ok, #{Path := #{data = Term,
-                 payload_version = PayloadVersion}}} =
-  khepri:get(StoredId, Path),
+{ok, #{data := Term,
+       payload_version := PayloadVersion}} =
+  khepri_adv:get(StoredId, Path),
 
 %% Do anything with `Term` that depend on external factors and could have side
 %% effects.
@@ -396,11 +337,41 @@ PathPattern = [stock,
                    &lt;&lt;"lime tree"&gt;&gt;,
                    #if_payload_version{version = PayloadVersion}]}],
 case khepri:put(StoredId, PathPattern, Term1) of
-    {ok, _} -&gt;
+    ok -&gt;
         ok; %% `Term1` was stored successfully.
-    {error, {mismatching_node, _}} -&gt;
+    {error, ?khepri_error(mismatching_node, _)} -&gt;
         loop() %% Restart the whole function to read/modify/write again.
 end.</code></pre>
+
+<h3><a name="Import_and_export">Import and export</a></h3>
+
+<p>To backup and restore a Khepri store, you can use <a docgen-rel="seemfa" docgen-href="khepri#export/4" href="khepri.html#export-4"><code>khepri:export/4</code></a> and
+<a docgen-rel="seemfa" docgen-href="khepri#import/3" href="khepri.html#import-3"><code>khepri:import/3</code></a>.</p>
+
+<p>They both rely on a backend module which follows the <a href="https://www.erlang.org/doc/apps/mnesia/mnesia_app_a">Mnesia Backup &amp;
+Restore API</a>. Khepri comes with one backend module called <a docgen-rel="seeerl" docgen-href="khepri_export_erlang" href="khepri_export_erlang.html"><code>khepri_export_erlang</code></a>. It uses plaintext files containing opaque Erlang terms
+formatted as text. It is possible to provide your own backend module obviously.</p>
+
+<p>To export the content of a running store:</p>
+
+<pre><code>ok = khepri:export(StoreId, khepri_export_erlang, "export.erl").</code></pre>
+
+<p>This will export the entire store. It is possible to export a part of it by
+passing a path patterns to select the tree nodes you want to export.</p>
+
+<p>Later, to import to a running store:</p>
+
+<pre><code>ok = khepri:import(StoreId, khepri_export_erlang, "export.erl").</code></pre>
+
+<p>Importing a backup does not touch unrelated tree nodes. In other words, the
+content of the exported store is imported but whatever exists in the target
+store remains (except if the import overwrites some tree nodes of course). In
+particular, the target store is not reset.</p>
+
+<p>You can learn more about this import/export feature in the <a docgen-rel="seeerl" docgen-href="khepri_import_export" href="khepri_import_export.html"><code>khepri_import_export</code></a> module documentation.</p>
+
+<p>You can lean more about the provide backend module by reading the documentation
+of <a docgen-rel="seeerl" docgen-href="khepri_export_erlang" href="khepri_export_erlang.html"><code>khepri_export_erlang</code></a>.</p>
 
 <h3><a name="Stored_procedures_and_triggers">Stored procedures and triggers</a></h3>
 
@@ -467,16 +438,16 @@ EventFilter = khepri_evf:tree([stock, wood, &lt;&lt;"oak"&gt;&gt;], %% Required
                               #{on_actions =&gt; [delete], %% Optional
                                 priority =&gt; 10}),       %% Optional
 
-%% For ease of use, some terms can be automatically converted to an event %
-%filter. Here, a Unix-like path could be used as a tree event % filter, though
-%it would have default properties unlike the previous line:
+%% For ease of use, some terms can be automatically converted to an event
+%% filter. Here, a Unix-like path could be used as a tree event filter, though
+%% it would have default properties unlike the previous line:
 EventFilter = "/:stock/:wood/oak".
 
 ok = khepri:register_trigger(
        StoreId,
        TriggerId,
        EventFilter,
-       StoredProcPath))}.</code></pre>
+       StoredProcPath).</code></pre>
 
 <p>In this example, the <a docgen-rel="seetype" docgen-href="khepri_evf#tree_event_filter/0" href="khepri_evf.html#type-tree_event_filter"><code>khepri_evf:tree_event_filter()</code></a> structure only
 requires the path to monitor. The path can be any path pattern and thus can
@@ -500,8 +471,8 @@ registered as well.</p>
 containing properties of the emitted event:</p>
 
 <pre><code>my_stored_procedure(Props) -&gt;
-    #{path := Path},
-      on_action =&gt; Action} = Props.</code></pre>
+    #{path := Path,
+      on_action := Action} = Props.</code></pre>
 
 <p><code>Path</code> is the path to the tree node created, updated or deleted.</p>
 
@@ -510,7 +481,7 @@ containing properties of the emitted event:</p>
 <p>The return value of this stored procedure is ignored in the context of a
 trigger.</p>
 
-<h4><a name="Execution_guaranties">Execution guaranties</a></h4>
+<h4><a name="Execution_guarantees">Execution guarantees</a></h4>
 
 <p>The stored procedure associated with a trigger (event filter) is executed on
 the Ra leader node.</p>
@@ -541,8 +512,51 @@ with the database directly</strong>. In other words, they must go through the
 regular Khepri API like any caller. Triggers do not have any privileges or
 blanket approvals to tamper with the data.</p>
 
-So even though Khepri uses the same naming than many RDBMS, triggers in Khepri
-can't have unexpected consequences.
+<p>So even though Khepri uses the same naming than many RDBMS, triggers in Khepri
+can't have unexpected consequences.</p>
+
+<h3><a name="Projections">Projections</a></h3>
+
+<p>Projections are a system within Khepri for maintaining replicated ETS caches
+for tree nodes matching a given path pattern.</p>
+
+<p>Projection resources are created with the <a docgen-rel="seemfa" docgen-href="khepri_projection#new/3" href="khepri_projection.html#new-3"><code>khepri_projection:new/3</code></a>
+function and are registered in a store with <a docgen-rel="seemfa" docgen-href="khepri#register_projection/4" href="khepri.html#register_projection-4"><code>khepri:register_projection/4</code></a>:</p>
+
+<pre><code>ProjectionName = wood_stocks,
+ProjectionFun = fun([stock, wood, Kind], Stock) -&gt; {Kind, Stock} end,
+Options = #{type =&gt; set, read_concurrency =&gt; true},
+Projection = khepri_projection:new(ProjectionName, ProjectionFun, Options).
+
+StoreId = stock,
+PathPattern = "/:stock/:wood/*",
+khepri:register_projection(StoreId, PathPattern, Projection).</code></pre>
+
+<p>When a path within the store which matches <code>PathPattern</code> changes, the changed
+path and data are passed to the given <code>ProjectionFun</code> to create ETS objects
+which are then stored in the projection's ETS table.</p>
+
+<p>Projection tables may be queried directly with functions from the <a docgen-rel="seeerl" docgen-href="ets" href="ets.html"><code>ets</code></a>
+module.</p>
+
+<pre><code>khepri:put(StoreId, "/:stock/:wood/oak", 100),
+ets:lookup(ProjectionName, &lt;&lt;"oak"&gt;&gt;, 2).
+%%=&gt; [{&lt;&lt;"oak"&gt;&gt;,100}]
+
+khepri:put(StoreId, "/:stock/:wood/oak", 80),
+ets:lookup(ProjectionName, &lt;&lt;"oak"&gt;&gt;, 2).
+%%=&gt; [{&lt;&lt;"oak"&gt;&gt;,80}]
+
+khepri:delete(StoreId, "/:stock/:wood/oak"),
+ets:member(ProjectionName, &lt;&lt;"oak"&gt;&gt;).
+%%=&gt; false</code></pre>
+
+<p>Use projections to maximize query throughput and/or minimize query latency.</p>
+
+Projections have some costs though. Expect some increased memory consumption
+since information in the projection tables is duplicated between the Khepri
+store and ETS. Khepri may also take longer to accomplish writes since
+projections are updated by Khepri synchronously when writing to the store.
 
 <hr>
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
