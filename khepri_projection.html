@@ -27,8 +27,8 @@ in a Khepri cluster.</p>
   <p>Projections provide a way to query the store as fast as possible and are  
 appropriate for lookups which require low latency and/or high throughput.  
 Projection tables contain all records matching the pattern, though, so the  
-memory footprint of a projection table grows with the number of tree nodes in  
-the store matching the pattern.</p>
+memory footprint of a projection table grows with the number of tree nodes  
+in the store matching the pattern.</p>
  
   <p>Projection ETS tables are owned by the Khepri cluster and are deleted when  
 the cluster stops.</p>
@@ -56,12 +56,13 @@ functions directly in order to build the projection table.</p>
   The return value of this function is ignored.</p>
 
 <h3 class="typedecl"><a name="type-options">options()</a></h3>
-<p><code>options() = #{type =&gt; <a href="/home/runner/work/khepri/stdlib/doc/ets.html#type-table_type">ets:table_type()</a>, keypos =&gt; pos_integer(), read_concurrency =&gt; boolean(), write_concurrency =&gt; boolean() | auto, compressed =&gt; boolean()}</code></p>
+<p><code>options() = #{type =&gt; <a href="/home/runner/work/khepri/stdlib/doc/ets.html#type-table_type">ets:table_type()</a>, keypos =&gt; pos_integer(), read_concurrency =&gt; boolean(), write_concurrency =&gt; boolean() | auto, compressed =&gt; boolean(), standalone_fun_options =&gt; <a href="/home/runner/work/khepri/horus/doc/horus.html#type-options">horus:options()</a>}</code></p>
 <p><p>  Options which control the created ETS table.</p>
  
-  <p>These options are a subset of the options available to <a docgen-rel="seemfa" docgen-href="ets#new/2" href="ets.html#new-2"><code>ets:new/2</code></a>.
-  Refer to the <a docgen-rel="seemfa" docgen-href="ets#new/2" href="ets.html#new-2"><code>ets:new/2</code></a> documentation for a reference on each type  
-and available values.</p>
+  <p>If provided, <code>standalone_fun_options</code> are merged with defaults and passed to
+  <a docgen-rel="seemfa" docgen-href="horus#to_standalone_fun/2" href="horus.html#to_standalone_fun-2"><code>horus:to_standalone_fun/2</code></a>. The remaining options are a subset of the
+  options available to <a docgen-rel="seemfa" docgen-href="ets#new/2" href="ets.html#new-2"><code>ets:new/2</code></a>. Refer to the <a docgen-rel="seemfa" docgen-href="ets#new/2" href="ets.html#new-2"><code>ets:new/2</code></a>  
+documentation for a reference on each type and available values.</p>
  
   When a projection is created from a <a docgen-rel="seetype" docgen-href="#simple_projection_fun/0" href="#type-simple_projection_fun"><code>simple_projection_fun()</code></a>, the
   <code>type</code> option may only be <code>set</code> or <code>ordered_set</code>: <code>bag</code> types are not
@@ -109,6 +110,7 @@ delete objects in the ETS table.</p>
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#new-2">new/2</a></td><td></td></tr>
 <tr><td valign="top"><a href="#new-3">new/3</a></td><td>Creates a new projection data structure.</td></tr>
 <tr><td valign="top"><a href="#name-1">name/1</a></td><td>Returns the name of the given <code>Projection</code>.</td></tr>
+<tr><td valign="top"><a href="#delete-1">delete/1</a></td><td></td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -149,6 +151,12 @@ delete objects in the ETS table.</p>
 <ul class="definitions"><li><code>Projection = <a href="#type-projection">projection()</a></code></li><li><code>Name = atom()</code></li></ul></p>
 <p></p>
 </div><p>Returns the name of the given <code>Projection</code>.</p>
+
+<h3 class="function"><a name="delete-1">delete/1</a></h3>
+<div class="spec">
+<p><code>delete(Khepri_projection) -&gt; any()</code></p>
+<p></p>
+</div>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>

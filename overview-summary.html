@@ -11,10 +11,10 @@
 <script src="prism.js"></script>
 <div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
 <h1>The Khepri Database</h1>
-<p>Copyright © 2021-2023 VMware, Inc. or its affiliates.  All rights reserved.</p>
+<p>Copyright © 2021-2024 Broadcom. All Rights Reserved. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.</p>
 <p><b>Version:</b> Development branch
 </p>
-<p><b>Authors:</b> Jean-Sébastien Pédron (<a href="mailto:jean-sebastien@rabbitmq.com"><tt>jean-sebastien@rabbitmq.com</tt></a>), Michael Davis (<a href="mailto:mcarsondavis@gmail.com"><tt>mcarsondavis@gmail.com</tt></a>), Karl Nilsson (<a href="mailto:nkarl@vmware.com"><tt>nkarl@vmware.com</tt></a>), The RabbitMQ team (<a href="mailto:info@rabbitmq.com"><tt>info@rabbitmq.com</tt></a>).</p>
+<p><b>Authors:</b> Jean-Sébastien Pédron (<a href="mailto:jean-sebastien.pedron@dumbbell.fr"><tt>jean-sebastien.pedron@dumbbell.fr</tt></a>), Michael Davis (<a href="mailto:mcarsondavis@gmail.com"><tt>mcarsondavis@gmail.com</tt></a>), Diana Parra Corbacho (<a href="mailto:dparracorbac@vmware.com"><tt>dparracorbac@vmware.com</tt></a>), Karl Nilsson (<a href="mailto:nkarl@vmware.com"><tt>nkarl@vmware.com</tt></a>), The RabbitMQ team (<a href="mailto:rabbitmq-core@groups.vmware.com"><tt>rabbitmq-core@groups.vmware.com</tt></a>).</p>
 <p>
 Khepri is a tree-like replicated on-disk database library for Erlang and
 Elixir.</p>
@@ -129,7 +129,8 @@ Path = [stock, wood, &lt;&lt;"oak"&gt;&gt;].</code></pre>
 
 It is possible to target multiple tree nodes at once by using a <em>path
 pattern</em> (<a docgen-rel="seetype" docgen-href="khepri_path#pattern/0" href="khepri_path.html#type-pattern"><code>khepri_path:pattern()</code></a>). In addition to node IDs, path
-patterns have conditions (<a docgen-rel="seetype" docgen-href="khepri_condition#condition/0" href="khepri_condition.html#type-condition"><code>khepri_condition:condition()</code></a>). Conditions allow things like:
+patterns have conditions (<a docgen-rel="seetype" docgen-href="khepri_condition#condition/0" href="khepri_condition.html#type-condition"><code>khepri_condition:condition()</code></a>). Conditions
+allow things like:
 <ul>
 <li>checking the existence of a tree node</li>
 <li>targeting all child nodes of a tree node</li>
